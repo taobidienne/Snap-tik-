@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Tải Video TikTok</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+    }
+    input, select, button {
+      padding: 10px;
+      margin: 10px;
+      width: 80%;
+      max-width: 400px;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      background: #ff0050;
+      color: white;
+      cursor: pointer;
+    }
+    a {
+      display: block;
+      margin-top: 20px;
+      color: #0f0;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🔥 Tải Video TikTok</h2>
+
+  <input type="text" id="link" placeholder="Dán link TikTok vào đây">
+
+  <br>
+
+  <select id="type">
+    <option value="nowm">Không logo</option>
+    <option value="wm">Có logo</option>
+    <option value="mp3">MP3 (âm thanh)</option>
+  </select>
+
+  <br>
+
+  <button onclick="download()">Tải ngay</button>
+
+  <a id="result" href="#" target="_blank"></a>
+
+<script>
+async function download() {
+  let url = document.getElementById("link").value;
+  let type = document.getElementById("type").value;
+
+  if (!url) {
+    alert("Dán link vào đã!");
+    return;
+  }
+
+  try {
+    let api = `https://tikwm.com/api/?url=${encodeURIComponent(url)}`;
+    let res = await fetch(api);
+    let data = await res.json();
+
+    if (data.code !== 0) {
+      alert("Lỗi lấy video!");
+      return;
+    }
+
+    let link;
+
+    if (type === "nowm") {
+      link = data.data.play;
+    } else if (type === "wm") {
+      link = data.data.wmplay;
+    } else {
+      link = data.data.music;
+    }
+
+    let result = document.getElementById("result");
+    result.href = link;
+    result.innerText = "👉 Bấm vào đây để tải";
+
+  } catch (e) {
+    alert("Lỗi rồi!");
+    console.log(e);
+  }
+}
+</script>
+
+</body>
+</html>
